@@ -46,8 +46,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c489853391260184baaf7d6c02b16c22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 5
-  viewAngleWidth: 60
   rays: 25
   filter: {fileID: 5079421945040958642}
 --- !u!23 &5965838824883465494
@@ -197,7 +195,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 3653122559939839709}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: a2089032ed43f3a4f9309c608e67300b, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -228,6 +226,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyView: {fileID: 8401980006709070677}
   viewAngleCenter: 0
+  angleWidth: 60
+  viewCenter: {x: 0, y: 0}
+  range: 5
+  behavior: {fileID: 0}
 --- !u!50 &3653122559939839696
 Rigidbody2D:
   serializedVersion: 4
@@ -248,4 +250,4 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4

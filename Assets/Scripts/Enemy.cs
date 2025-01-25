@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private EnemyView enemyView;
@@ -9,15 +11,18 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float angleWidth = 60f;
     [SerializeField] private Vector2 viewCenter;
     [SerializeField] private float range = 5f;
+    [SerializeField] private EnemyMoveBehavior behavior;
+
     // Start is called before the first frame update
     void Start()
     {
-        enemyView.Initialize(range, angleWidth);
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        enemyView.Initialize(range, angleWidth);
         enemyView.transform.localPosition = viewCenter;
         enemyView.transform.rotation = Quaternion.Euler(0, 0, viewAngleCenter);
         CheckIfPlayerInView();
@@ -30,7 +35,7 @@ public class Enemy : MonoBehaviour
         Vector2 playerPosition = Vector2.zero; // REPLACE WHEN DONE WITH PLAYER COLLIDER CENTER
         if (Vector2.Distance(viewCenterPos, playerPosition) > range)
         {
-            Debug.Log("too far");
+            //Debug.Log("too far");
             return;
         }
         float angle = Vector2.Angle(Quaternion.Euler(0, 0, viewAngleCenter) * Vector2.right, playerPosition - viewCenterPos);
@@ -38,7 +43,7 @@ public class Enemy : MonoBehaviour
         
         if (angle > angleWidth / 2)
         {
-            Debug.Log("outside of view");
+            //Debug.Log("outside of view");
             return;
         }
         int layerMask = 1 << 3;
@@ -48,13 +53,13 @@ public class Enemy : MonoBehaviour
         {
             if (hit.collider.gameObject.name == "Player") // REPLACE WITH .GetComponent<Player>()
             {
-                Debug.Log("PLAYER IN VIEW 3");
+                Debug.Log("PLAYER IN VIEW");
                 // DO SOMETHING
                 return;
             }
         }
 
-        Debug.Log("no hit");
+        //Debug.Log("no hit");
 
         // VER 1: PRECISE PLAYER HITBOX
         /*Vector2 viewCenterPos = (Vector2)transform.position + viewCenter;
@@ -62,7 +67,7 @@ public class Enemy : MonoBehaviour
         float playerDiagonalWidth = 1.4f / 2; // REPLACE WITH PLAYER DIAGONAL WIDTH (sqrt BOUNDS.EXTENTS^2)
         if (Vector2.Distance(viewCenterPos, playerPosition) > range + playerDiagonalWidth)
         {
-            Debug.Log("too far");
+            //Debug.Log("too far");
             return;
         }
         float angle = Vector2.Angle(Quaternion.Euler(0, 0, viewAngleCenter) * Vector2.right, playerPosition - viewCenterPos);
@@ -74,20 +79,20 @@ public class Enemy : MonoBehaviour
         RaycastHit2D hit1 = Physics2D.Raycast(viewCenterPos, Quaternion.Euler(0, 0, viewAngleCenter - (angleWidth / 2)) * Vector2.right, range, layerMask);
         if (hit1 && hit1.collider.gameObject.name == "Player") // REPLACE WITH .GetComponent<Player>()
         {
-            Debug.Log("PLAYER IN VIEW 1");
+            //Debug.Log("PLAYER IN VIEW 1");
             return;
             // DO SOMETHING
         }
         RaycastHit2D hit2 = Physics2D.Raycast(viewCenterPos, Quaternion.Euler(0, 0, viewAngleCenter + (angleWidth / 2)) * Vector2.right, range, layerMask);
         if (hit2 && hit2.collider.gameObject.name == "Player") // REPLACE WITH .GetComponent<Player>()
         {
-            Debug.Log("PLAYER IN VIEW 2");
+            //Debug.Log("PLAYER IN VIEW 2");
             return;
             // DO SOMETHING
         }
         if (angle > angleWidth / 2)
         {
-            Debug.Log("outside of view");
+            //Debug.Log("outside of view");
             return;
         }
 
@@ -106,15 +111,26 @@ public class Enemy : MonoBehaviour
             {
                 if (hit.collider.gameObject.name == "Player") // REPLACE WITH .GetComponent<Player>()
                 {
-                    Debug.Log("PLAYER IN VIEW 3");
+                    //Debug.Log("PLAYER IN VIEW 3");
                     // DO SOMETHING
                     return;
                 }
             }
         }
 
-        Debug.Log("no hit");
+        //Debug.Log("no hit");
         */
+    }
 
+    public void FlipView()
+    {
+        if (viewAngleCenter <= 180)
+        {
+            viewAngleCenter = 180 - viewAngleCenter;
+        }
+        else
+        {
+            viewAngleCenter = 540 - viewAngleCenter;
+        }
     }
 }
