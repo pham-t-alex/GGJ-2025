@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,22 +10,43 @@ public class Player : MonoBehaviour
     private bool movedRightLast = true;
     [SerializeField] private float jumpStrength = 0f;
     [SerializeField] private float speed = 0.0f;
-    private int maxJumps = 2;
-    private int jumpCount = 0;
+    private int maxJumps = 1;
+    private int jumpCount = 1;
     private Vector2 moveDirection = Vector2.zero;
     private Rigidbody2D rb;
+    private float jumping = 0;
+
+    private static Player _player;
+    public static Player player
+    {
+        get
+        {
+            if (_player == null)
+            {
+                _player = FindObjectOfType<Player>();
+            }
+            return _player;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        //BattleUI.Instance.AddPlayer(this);
+        _player = this;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (jumping > 0)
+        {
+            jumping -= Time.deltaTime;
+            if (jumping < 0)
+            {
+                jumping = 0;
+            }
+        }
     }
 
     private void FixedUpdate() {
@@ -79,13 +101,20 @@ public class Player : MonoBehaviour
             rb.AddForce(new Vector2(0, jumpStrength), ForceMode2D.Impulse);
             //pAnimator.SetTrigger("TrJump");
             Debug.Log("Jumped!");
+            jumping = 0.1f;
         }
     }
-    private void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.GetContact(0).normal == Vector2.up)
+    private void OnCollisionStay2D(Collision2D collision) {
+        if (collision.gameObject.layer == 3)
+        {
+            for (int i = 0; i < collision.contactCount; i++)
             {
-                jumpCount = maxJumps;
-                Debug.Log("Jumps reset");
+                if (collision.GetContact(i).normal == Vector2.up && jumping == 0)
+                {
+                    jumpCount = maxJumps;
+                    Debug.Log("Jumps reset");
+                }
             }
+        }
     }
 }

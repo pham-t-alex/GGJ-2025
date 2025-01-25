@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
@@ -32,7 +33,7 @@ public class Enemy : MonoBehaviour
     {
         // VER 2: PLAYER HITBOX IS JUST CENTER
         Vector2 viewCenterPos = (Vector2)transform.position + viewCenter;
-        Vector2 playerPosition = Vector2.zero; // REPLACE WHEN DONE WITH PLAYER COLLIDER CENTER
+        Vector2 playerPosition = Player.player.transform.position;
         if (Vector2.Distance(viewCenterPos, playerPosition) > range)
         {
             //Debug.Log("too far");
@@ -51,7 +52,8 @@ public class Enemy : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(viewCenterPos, playerPosition - (Vector2)viewCenterPos, range, layerMask);
         if (hit)
         {
-            if (hit.collider.gameObject.name == "Player") // REPLACE WITH .GetComponent<Player>()
+            Player p = hit.collider.GetComponent<Player>();
+            if (p != null)
             {
                 Debug.Log("PLAYER IN VIEW");
                 // DO SOMETHING

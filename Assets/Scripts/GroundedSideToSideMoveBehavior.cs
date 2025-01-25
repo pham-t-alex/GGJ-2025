@@ -44,6 +44,7 @@ public class GroundedSideToSideMoveBehavior : EnemyMoveBehavior
             {
                 rb.velocity = new Vector2(0, rb.velocity.y);
                 paused = waitTimeAtEdge;
+                Debug.Log("bound");
                 return;
             }
             Bounds bounds = col.bounds;
@@ -63,6 +64,7 @@ public class GroundedSideToSideMoveBehavior : EnemyMoveBehavior
             {
                 rb.velocity = new Vector2(0, rb.velocity.y);
                 paused = waitTimeAtEdge;
+                Debug.Log("edge");
             }
         }
     }
@@ -73,9 +75,9 @@ public class GroundedSideToSideMoveBehavior : EnemyMoveBehavior
         {
             grounded = false;
             
-            foreach (ContactPoint2D point in collision.contacts)
+            for (int i = 0; i < collision.contactCount; i++)
             {
-                Vector3 normal = point.normal;
+                Vector3 normal = collision.GetContact(i).normal;
                 if (normal == Vector3.up)
                 {
                     grounded = true;
@@ -90,6 +92,7 @@ public class GroundedSideToSideMoveBehavior : EnemyMoveBehavior
                         {
                             paused = waitTimeAtEdge;
                         }
+                        Debug.Log("block");
                     }
                 }
 
@@ -102,6 +105,7 @@ public class GroundedSideToSideMoveBehavior : EnemyMoveBehavior
                         {
                             paused = waitTimeAtEdge;
                         }
+                        Debug.Log("block");
                     }
                 }
             }
