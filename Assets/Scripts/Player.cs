@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     private Vector2 moveDirection = Vector2.zero;
     private Rigidbody2D rb;
     private float jumping = 0;
+    [SerializeField] private float attackRange = 0;
 
     private static Player _player;
     public static Player player
@@ -104,6 +105,18 @@ public class Player : MonoBehaviour
             jumping = 0.1f;
         }
     }
+
+    public void Attack(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            Vector2 mousePos = Mouse.current.position.ReadValue();
+            Vector2 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+            GameObject g = Instantiate(Prefabs.Instance.AttackArea, transform.position + Vector3.Normalize((Vector3)worldPos - transform.position) * attackRange, Quaternion.identity);
+            Destroy(g, 0.1f);
+        }
+    }
+
     private void OnCollisionStay2D(Collision2D collision) {
         if (collision.gameObject.layer == 3)
         {
@@ -116,5 +129,10 @@ public class Player : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void PickupBubble()
+    {
+        
     }
 }

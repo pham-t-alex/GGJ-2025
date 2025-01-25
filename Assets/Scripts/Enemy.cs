@@ -31,6 +31,10 @@ public class Enemy : MonoBehaviour
 
     void CheckIfPlayerInView()
     {
+        if (Player.player == null)
+        {
+            return;
+        }
         // VER 2: PLAYER HITBOX IS JUST CENTER
         Vector2 viewCenterPos = (Vector2)transform.position + viewCenter;
         Vector2 playerPosition = Player.player.transform.position;
@@ -55,8 +59,7 @@ public class Enemy : MonoBehaviour
             Player p = hit.collider.GetComponent<Player>();
             if (p != null)
             {
-                Debug.Log("PLAYER IN VIEW");
-                // DO SOMETHING
+                Destroy(p.gameObject);
                 return;
             }
         }
@@ -134,5 +137,10 @@ public class Enemy : MonoBehaviour
         {
             viewAngleCenter = 540 - viewAngleCenter;
         }
+    }
+
+    public void OnDestroy()
+    {
+        Instantiate(Prefabs.Instance.BubbleItem, transform.position, Quaternion.identity);
     }
 }
