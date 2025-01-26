@@ -48,10 +48,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72611409fc5bd4d14a93d4b660006566, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpStrength: 7
+  jumpStrength: 20
   speed: 7
   attackRange: 1.5
-  attackArea: {fileID: 0}
 --- !u!114 &56447430074566849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,6 +164,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 06bb7e9a-699b-4069-939e-f505ca0eb6b8
     m_ActionName: Player/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3665253306636131059}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: ThrowSmallBubble
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 934fc720-802e-48d1-ac99-9b204ccc61f2
+    m_ActionName: Player/Small Bubble[/Keyboard/1]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -185,7 +200,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 8
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1

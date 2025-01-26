@@ -22,7 +22,7 @@ public class AttackArea : MonoBehaviour
         Enemy e = collision.GetComponent<Enemy>();
         if (e != null)
         {
-            Destroy(e.gameObject);
+            e.Die();
         }
     }
 }

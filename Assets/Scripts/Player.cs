@@ -112,8 +112,20 @@ public class Player : MonoBehaviour
         {
             Vector2 mousePos = Mouse.current.position.ReadValue();
             Vector2 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
-            GameObject g = Instantiate(Prefabs.Instance.AttackArea, transform.position + Vector3.Normalize((Vector3)worldPos - transform.position) * attackRange, Quaternion.identity);
+            GameObject g = Instantiate(ObjectController.Instance.AttackArea, transform.position + Vector3.Normalize((Vector3)worldPos - transform.position) * attackRange, Quaternion.identity);
             Destroy(g, 0.1f);
+        }
+    }
+
+    public void ThrowSmallBubble(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            Vector2 mousePos = Mouse.current.position.ReadValue();
+            Vector2 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+            GameObject g = Instantiate(ObjectController.Instance.DistractionBubble, transform.position, Quaternion.identity);
+            g.GetComponent<DistractionBubble>().Launch(Vector3.Normalize((Vector3)worldPos - transform.position));
+            Destroy(g, 10f);
         }
     }
 

@@ -1,3 +1,4 @@
+using Mono.Cecil.Cil;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -13,6 +14,27 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Vector2 viewCenter;
     [SerializeField] private float range = 5f;
     [SerializeField] private EnemyMoveBehavior behavior;
+    private GameObject distractionBubble;
+    public GameObject DistractionBubble
+    {
+        get
+        {
+            return distractionBubble;
+        }
+    }
+    public bool Distracted
+    {
+        get
+        {
+            return distractionBubble != null;
+        }
+    }
+
+    public delegate void DistractedDelegate(float viewAngle);
+    public event DistractedDelegate DistractedEvent;
+
+    public delegate void NotDistractedDelegate();
+    public event NotDistractedDelegate NotDistractedEvent;
 
     // Start is called before the first frame update
     void Start()
@@ -23,10 +45,21 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Vision();
         enemyView.Initialize(range, angleWidth);
         enemyView.transform.localPosition = viewCenter;
         enemyView.transform.rotation = Quaternion.Euler(0, 0, viewAngleCenter);
+    }
+
+    void Vision()
+    {
         CheckIfPlayerInView();
+        CheckForDistractions();
+        if (Distracted)
+        {
+            float newAngle = Vector2.SignedAngle(Vector2.right, distractionBubble.transform.position - transform.position);
+            viewAngleCenter = (newAngle >= 0) ? newAngle : newAngle + 360;
+        }
     }
 
     void CheckIfPlayerInView()
@@ -127,6 +160,63 @@ public class Enemy : MonoBehaviour
         */
     }
 
+    void CheckForDistractions()
+    {
+        bool wasDistracted = false;
+        if (distractionBubble != null)
+        {
+            wasDistracted = true;
+            if (CheckBubbleHelper(distractionBubble))
+            {
+                return;
+            }
+        }
+        foreach (GameObject b in ObjectController.Instance.DistractionBubbles)
+        {
+            if (b != distractionBubble && CheckBubbleHelper(b))
+            {
+                if (!wasDistracted)
+                {
+                    DistractedEvent(viewAngleCenter);
+                }
+                distractionBubble = b;
+                return;
+            }
+        }
+        distractionBubble = null;
+        if (wasDistracted)
+        {
+            NotDistractedEvent();
+        }
+    }
+
+    bool CheckBubbleHelper(GameObject b)
+    {
+        Vector2 viewCenterPos = (Vector2)transform.position + viewCenter;
+        Vector2 bubblePos = b.transform.position;
+        if (Vector2.Distance(viewCenterPos, bubblePos) > range)
+        {
+            return false;
+        }
+        float angle = Vector2.Angle(Quaternion.Euler(0, 0, viewAngleCenter) * Vector2.right, bubblePos - viewCenterPos);
+        if (angle > angleWidth / 2)
+        {
+            return false;
+        }
+        int layerMask = 1 << 3;
+        layerMask |= 1 << 10;
+        RaycastHit2D hit = Physics2D.Raycast(viewCenterPos, bubblePos - (Vector2)viewCenterPos, range, layerMask);
+        if (hit)
+        {
+            DistractionBubble bubble = hit.collider.GetComponent<DistractionBubble>();
+            if (bubble != null)
+            {
+                return true; // bubble currently in view
+            }
+        }
+        return false;
+    }
+
     public void FlipView()
     {
         if (viewAngleCenter <= 180)
@@ -139,8 +229,14 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void OnDestroy()
+    public void RestoreView(float view)
     {
-        Instantiate(Prefabs.Instance.BubbleItem, transform.position, Quaternion.identity);
+        viewAngleCenter = view;
+    }
+
+    public void Die()
+    {
+        Instantiate(ObjectController.Instance.BubbleItem, transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 }
