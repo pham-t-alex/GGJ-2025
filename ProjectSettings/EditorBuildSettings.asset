@@ -6,6 +6,18 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Scenes/Game.unity
+    guid: e7765e69cad5e5247bf2af18bdbe760a
+  - enabled: 1
+    path: Assets/Scenes/Sun Roof Cutscene.unity
+    guid: 1f2a6f86a90180f47968578aed3f5383
+  - enabled: 1
+    path: Assets/Scenes/Office Before Sun Roof.unity
+    guid: b8b56b5ca3f93014db02e999916f64f6
+  - enabled: 1
+    path: Assets/Scenes/After Sun Roof.unity
+    guid: bb3a41c92561d8a46969c15c67f9d7f7
+  - enabled: 1
+    path: Assets/Scenes/Final Confrontation.unity
+    guid: 4eb2b2c6311d59243914aae589d20f3e
   m_configObjects: {}

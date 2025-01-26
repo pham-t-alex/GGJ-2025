@@ -16,6 +16,7 @@ public class GroundedSideToSideMoveBehavior : EnemyMoveBehavior
     private bool grounded = false;
     private float preDistractedView;
     private bool preDistractedOrientation;
+    [SerializeField] private bool disableCollideProtect = false;
     
     protected override void Start()
     {
@@ -145,7 +146,7 @@ public class GroundedSideToSideMoveBehavior : EnemyMoveBehavior
 
                 else if (normal == Vector3.right)
                 {
-                    if (!rightward)
+                    if (!rightward && !disableCollideProtect)
                     {
                         rb.velocity = new Vector2(0, rb.velocity.y);
                         if (paused == 0)
@@ -158,7 +159,7 @@ public class GroundedSideToSideMoveBehavior : EnemyMoveBehavior
 
                 else if (normal == Vector3.left)
                 {
-                    if (rightward)
+                    if (rightward && !disableCollideProtect)
                     {
                         rb.velocity = new Vector2(0, rb.velocity.y);
                         if (paused == 0)
