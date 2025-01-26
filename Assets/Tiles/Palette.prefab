@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 3032207879951384737}
   - component: {fileID: 3556047556544261087}
   - component: {fileID: 8837585053048458933}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Layer1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -199,7 +199,7 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
---- !u!114 &5495035238459017493
+--- !u!114 &2018412244936928276
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
