@@ -231,14 +231,14 @@ public class Player : MonoBehaviour
             //rb = newLargeBubble.GetComponent<Rigidbody2D>();
             usingLargeBubble = true;
         }
-        else if (context.canceled && newLargeBubble != null)
-        {
-            newLargeBubble.GetComponent<LargeBubble>().Pop();
-        }
-        else if (context.duration > 0.5f) 
+        else if (context.performed)
         {
             newLargeBubble = Instantiate(ObjectController.Instance.LargeBubble);
             newLargeBubble.transform.position = new Vector2(this.transform.position.x, this.transform.position.y);
+        }
+        else if (context.canceled && newLargeBubble != null)
+        {
+            newLargeBubble.GetComponent<LargeBubble>().Pop();
         }
         Debug.Log("context.duration: " + context.duration);
     }
