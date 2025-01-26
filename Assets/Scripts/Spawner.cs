@@ -11,11 +11,12 @@ public class Spawner : MonoBehaviour
     [SerializeField] private Vector2 viewCenter = new Vector2(0, 0);
     [SerializeField] private float enemyRange = 5f;
     [SerializeField] private SpawnerEnemyMovement enemyMovementBehavior;
+    private Animator eAnimator;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        eAnimator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -28,6 +29,7 @@ public class Spawner : MonoBehaviour
         if (spawnTimer <= 0)
         {
             Enemy e = Instantiate(ObjectController.Instance.EnemyPrefab, transform.position, Quaternion.identity).GetComponent<Enemy>();
+            eAnimator.SetTrigger("TrSpawn");
             e.Initialize(enemyViewAngleCenter, enemyAngleWidth, viewCenter, enemyRange);
             enemyMovementBehavior.InitializeEnemyMovement(e);
             spawnTimer = spawnInterval;

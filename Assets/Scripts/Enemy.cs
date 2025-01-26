@@ -36,6 +36,9 @@ public class Enemy : MonoBehaviour
     public delegate void NotDistractedDelegate();
     public event NotDistractedDelegate NotDistractedEvent;
 
+    private Rigidbody2D rb;
+    private Animator eAnimator;
+
     public void Initialize(float angleCenter, float angleWidth, Vector2 center, float range)
     {
         viewAngleCenter = angleCenter;
@@ -47,7 +50,8 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        rb = GetComponent<Rigidbody2D>();
+        eAnimator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -57,6 +61,11 @@ public class Enemy : MonoBehaviour
         enemyView.Initialize(range, angleWidth);
         enemyView.transform.localPosition = viewCenter;
         enemyView.transform.rotation = Quaternion.Euler(0, 0, viewAngleCenter);
+        if (rb.velocity.x != 0) {
+            eAnimator.SetBool("Walking", true);
+        } else {
+            eAnimator.SetBool("Walking", false);
+        }
     }
 
     void Vision()
@@ -246,6 +255,7 @@ public class Enemy : MonoBehaviour
     public void Die()
     {
         Instantiate(ObjectController.Instance.BubbleItem, transform.position, Quaternion.identity);
+        eAnimator.SetTrigger("TrDeath");
         Destroy(gameObject);
     }
 }

@@ -9,6 +9,7 @@ public class LargeBubble : MonoBehaviour
     public Vector2 getRBVelocity() {
         return rb.velocity;
     }
+    private Animator bAnimator;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,6 +17,7 @@ public class LargeBubble : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         rb.velocity = new Vector2(rb.velocity.x, 3.0f);
         Debug.Log("Velo: " + rb.velocity);
+        bAnimator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -23,7 +25,13 @@ public class LargeBubble : MonoBehaviour
     {
         
     }
-
+    
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.GetContact(0).normal != Vector2.up) {
+            Pop();
+        } 
+    }
+    /*
     private void OnTriggerEnter2D(Collider2D collider) {
         Player p = collider.GetComponent<Player>();
         Debug.Log("is collider null: " + (collider == null));
@@ -32,10 +40,12 @@ public class LargeBubble : MonoBehaviour
             Pop();
         }
     }
+    */
 
     public void Pop()
     {
         Debug.Log("destroyed");
+        bAnimator.SetTrigger("TrBigBubbleShot");
         PLAYER.setUsingLargeBubble(false);
         Destroy(this.gameObject);
     }

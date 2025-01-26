@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     private Rigidbody2D originalRB;
     private float jumping = 0;
     [SerializeField] private float attackRange = 0;
+    private Animator pAnimator;
 
     private static Player _player;
     public static Player player
@@ -53,6 +54,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         originalRB = rb;
         _player = this;
+        pAnimator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -93,24 +95,24 @@ public class Player : MonoBehaviour
 
     public void Move(InputAction.CallbackContext context)
     {
-        /*
+        Vector2 direction = context.ReadValue<Vector2>();
+        moveDirection.x = direction.x;
         if (context.canceled)
         {
             if (moving)
             {
+                pAnimator.SetBool("Walking", false);
                 moving = false;
-                //InterruptMovement();
             }
             return;
         }
-        */
+        pAnimator.SetBool("Walking", true);
         moving = true;
-        Vector2 direction = context.ReadValue<Vector2>();
-        moveDirection.x = direction.x;
         if (moveDirection.x < 0)
         {
             //movedLeftLast = true;
             movedRightLast = false;
+            GetComponent<SpriteRenderer>().flipX = true;
             //if (player2) GetComponent<SpriteRenderer>().flipX = true;
             //else GetComponent<SpriteRenderer>().flipX = false;
             Debug.Log("Last moved left");
@@ -119,6 +121,7 @@ public class Player : MonoBehaviour
         {
             //movedLeftLast = false;
             movedRightLast = true;
+            GetComponent<SpriteRenderer>().flipX = false;
             //if (!player2) GetComponent<SpriteRenderer>().flipX = true;
             //else GetComponent<SpriteRenderer>().flipX = false;
             Debug.Log("Last moved right");
@@ -147,6 +150,7 @@ public class Player : MonoBehaviour
     {
         if (context.started)
         {
+            pAnimator.SetTrigger("TrAttack");
             Vector2 mousePos = Mouse.current.position.ReadValue();
             Vector2 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
             GameObject g = Instantiate(ObjectController.Instance.AttackArea, transform.position + Vector3.Normalize((Vector3)worldPos - transform.position) * attackRange, Quaternion.identity);
@@ -162,6 +166,7 @@ public class Player : MonoBehaviour
             {
                 return;
             }
+            pAnimator.SetTrigger("TrThrow");
             ConsumeBubbles(1);
             Vector2 mousePos = Mouse.current.position.ReadValue();
             Vector2 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
@@ -195,8 +200,13 @@ public class Player : MonoBehaviour
                 return;
             }
             ConsumeBubbles(2);
-            newLargeBubble = Instantiate(ObjectController.Instance.LargeBubble);
+            Debug.Log("trigger big bubble shot");
+            pAnimator.SetTrigger("TrBigBubbleShot");
+            /*newLargeBubble = Instantiate(ObjectController.Instance.LargeBubble);
             newLargeBubble.transform.position = new Vector2(this.transform.position.x, this.transform.position.y);
+            */
+
+
             //Debug.Log("newLargeBubble position: " + newLargeBubble.transform.position);
             //rb = newLargeBubble.GetComponent<Rigidbody2D>();
             usingLargeBubble = true;
@@ -205,6 +215,12 @@ public class Player : MonoBehaviour
         {
             newLargeBubble.GetComponent<LargeBubble>().Pop();
         }
+        else if (context.duration > 0.5f) 
+        {
+            newLargeBubble = Instantiate(ObjectController.Instance.LargeBubble);
+            newLargeBubble.transform.position = new Vector2(this.transform.position.x, this.transform.position.y);
+        }
+        Debug.Log("context.duration: " + context.duration);
     }
     
     public void setUsingLargeBubble(bool other) {
