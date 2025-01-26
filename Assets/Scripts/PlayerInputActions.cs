@@ -62,6 +62,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""UseLargeBubble"",
+                    ""type"": ""Button"",
+                    ""id"": ""d05b9032-b56a-4c06-bd3f-7492e0231a17"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -194,6 +203,17 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Small Bubble"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b9402192-4b94-4f25-b5e6-fec03d872320"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UseLargeBubble"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -784,6 +804,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
+        m_Player_UseLargeBubble = m_Player.FindAction("UseLargeBubble", throwIfNotFound: true);
         m_Player_SmallBubble = m_Player.FindAction("Small Bubble", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
@@ -859,6 +880,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Attack;
     private readonly InputAction m_Player_Jump;
+    private readonly InputAction m_Player_UseLargeBubble;
     private readonly InputAction m_Player_SmallBubble;
     public struct PlayerActions
     {
@@ -867,6 +889,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Attack => m_Wrapper.m_Player_Attack;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
+        public InputAction @UseLargeBubble => m_Wrapper.m_Player_UseLargeBubble;
         public InputAction @SmallBubble => m_Wrapper.m_Player_SmallBubble;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
@@ -886,6 +909,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                @UseLargeBubble.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseLargeBubble;
+                @UseLargeBubble.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseLargeBubble;
+                @UseLargeBubble.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseLargeBubble;
                 @SmallBubble.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSmallBubble;
                 @SmallBubble.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSmallBubble;
                 @SmallBubble.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSmallBubble;
@@ -902,6 +928,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
+                @UseLargeBubble.started += instance.OnUseLargeBubble;
+                @UseLargeBubble.performed += instance.OnUseLargeBubble;
+                @UseLargeBubble.canceled += instance.OnUseLargeBubble;
                 @SmallBubble.started += instance.OnSmallBubble;
                 @SmallBubble.performed += instance.OnSmallBubble;
                 @SmallBubble.canceled += instance.OnSmallBubble;
@@ -1064,6 +1093,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnUseLargeBubble(InputAction.CallbackContext context);
         void OnSmallBubble(InputAction.CallbackContext context);
     }
     public interface IUIActions
