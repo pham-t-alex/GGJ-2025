@@ -11,5 +11,31 @@ public abstract class EnemyMoveBehavior : MonoBehaviour
     protected virtual void Start()
     {
         enemy = GetComponent<Enemy>();
+        enemy.DistractedEvent += DistractedUpdate;
+        enemy.NotDistractedEvent += NotDistractedUpdate;
+    }
+
+    protected abstract void StandardMovement();
+    protected abstract void DistractedMovement();
+
+    private void FixedUpdate()
+    {
+        if (enemy.Distracted)
+        {
+            DistractedMovement();
+        }
+        else
+        {
+            StandardMovement();
+        }
+    }
+
+    protected virtual void DistractedUpdate(float view)
+    {
+
+    }
+    protected virtual void NotDistractedUpdate()
+    {
+
     }
 }
