@@ -185,7 +185,8 @@ public class Enemy : MonoBehaviour
             {
                 if (!wasDistracted)
                 {
-                    DistractedEvent(viewAngleCenter);
+
+                    DistractedEvent?.Invoke(viewAngleCenter);
                 }
                 distractionBubble = b;
                 return;
@@ -194,7 +195,7 @@ public class Enemy : MonoBehaviour
         distractionBubble = null;
         if (wasDistracted)
         {
-            NotDistractedEvent();
+            NotDistractedEvent?.Invoke();
         }
     }
 
