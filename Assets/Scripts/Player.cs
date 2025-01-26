@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     private bool movedRightLast = true;
     [SerializeField] private float jumpStrength = 0f;
     [SerializeField] private float speed = 0.0f;
+    [SerializeField] private float bubbleHorizontalSpeed = 0.0f;
     private int maxJumps = 1;
     private int jumpCount = 1;
     private Vector2 moveDirection = Vector2.zero;
@@ -37,7 +38,14 @@ public class Player : MonoBehaviour
     public delegate void BubbleCountUpdate(int count);
     public event BubbleCountUpdate BubbleCountEvent;
 
-    private int bubbleCount = 0;
+    private int bubbleCount = 2;
+    public int BubbleCount
+    {
+        get
+        {
+            return bubbleCount;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -59,7 +67,7 @@ public class Player : MonoBehaviour
             }
         }
         if (newLargeBubble != null && usingLargeBubble) {
-            rb.velocity = new Vector2(moveDirection.x * speed, newLargeBubble.GetComponent<Rigidbody2D>().velocity.y);
+            rb.velocity = new Vector2(moveDirection.x * bubbleHorizontalSpeed, newLargeBubble.GetComponent<Rigidbody2D>().velocity.y);
             newLargeBubble.transform.position = this.transform.position;
         } else {
             rb.velocity = new Vector2(moveDirection.x * speed, rb.velocity.y);    
@@ -124,7 +132,7 @@ public class Player : MonoBehaviour
     }
     public void Jump(InputAction.CallbackContext context)
     {
-        if (context.started && jumpCount > 0)
+        if (context.started && jumpCount > 0 && !usingLargeBubble)
         {
             jumpCount--;
             rb.velocity = new Vector2(rb.velocity.x, 0);
@@ -192,6 +200,10 @@ public class Player : MonoBehaviour
             //Debug.Log("newLargeBubble position: " + newLargeBubble.transform.position);
             //rb = newLargeBubble.GetComponent<Rigidbody2D>();
             usingLargeBubble = true;
+        }
+        else if (context.canceled && newLargeBubble != null)
+        {
+            newLargeBubble.GetComponent<LargeBubble>().Pop();
         }
     }
     
