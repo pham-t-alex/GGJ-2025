@@ -211,7 +211,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 2.2}
   m_EdgeRadius: 0
 --- !u!114 &3653122559939839697
 MonoBehaviour:
@@ -228,7 +228,7 @@ MonoBehaviour:
   enemyView: {fileID: 8401980006709070677}
   viewAngleCenter: 0
   angleWidth: 60
-  viewCenter: {x: 0, y: 0}
+  viewCenter: {x: 0, y: 0.5}
   range: 5
   behavior: {fileID: 0}
 --- !u!50 &3653122559939839696
