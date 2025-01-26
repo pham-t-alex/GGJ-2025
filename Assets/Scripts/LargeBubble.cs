@@ -14,7 +14,7 @@ public class LargeBubble : MonoBehaviour
     {
         PLAYER = Player.player;
         rb = GetComponent<Rigidbody2D>();
-        rb.velocity = new Vector2(rb.velocity.x, 4.0f);
+        rb.velocity = new Vector2(rb.velocity.x, 3.0f);
         Debug.Log("Velo: " + rb.velocity);
     }
 
@@ -29,9 +29,14 @@ public class LargeBubble : MonoBehaviour
         Debug.Log("is collider null: " + (collider == null));
         Debug.Log("is p PLAYER: " + (p == PLAYER));
         if (collider != null && p != PLAYER) {
-            Debug.Log("destroyed");
-            PLAYER.setUsingLargeBubble(false);
-            Destroy(this.gameObject);
+            Pop();
         }
+    }
+
+    public void Pop()
+    {
+        Debug.Log("destroyed");
+        PLAYER.setUsingLargeBubble(false);
+        Destroy(this.gameObject);
     }
 }

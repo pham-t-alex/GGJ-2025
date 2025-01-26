@@ -11,6 +11,7 @@ public class BubbleCounter : MonoBehaviour
     {
         text = GetComponent<TMP_Text>();
         Player.player.BubbleCountEvent += UpdateText;
+        UpdateText(Player.player.BubbleCount);
     }
 
     // Update is called once per frame
