@@ -1,9 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AudioController : MonoBehaviour
 {
+    private static AudioController instance;
+    public static AudioController Instance
+    {
+        get
+        {
+            return instance;
+        }
+    }
     public AudioSource audioSource
     {
         get
@@ -16,7 +25,12 @@ public class AudioController : MonoBehaviour
 
     private void Awake()
     {
+        if (instance != null)
+        {
+            Destroy(gameObject);
+        }
         DontDestroyOnLoad(gameObject);
+        instance = this;
     }
 
     // Start is called before the first frame update
