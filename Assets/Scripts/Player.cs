@@ -31,7 +31,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    [SerializeField] private GameObject LargeBubble;
     private GameObject newLargeBubble;
     private bool usingLargeBubble = false;
 
@@ -156,7 +155,7 @@ public class Player : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision) {
         Debug.Log("collision.gameObject.layer: " + collision.gameObject.layer);
-        if (collision.gameObject.layer == 0/*3*/)
+        if (collision.gameObject.layer == 3)
         {
             Debug.Log("collision.contactCount: " + collision.contactCount);
             for (int i = 0; i < collision.contactCount; i++)
@@ -173,7 +172,7 @@ public class Player : MonoBehaviour
     public void UseLargeBubble(InputAction.CallbackContext context) {
         Debug.Log("pressed number 2");
         if (context.started) {
-            newLargeBubble = Instantiate(LargeBubble);
+            newLargeBubble = Instantiate(ObjectController.Instance.LargeBubble);
             newLargeBubble.transform.position = new Vector2(this.transform.position.x, this.transform.position.y);
             //Debug.Log("newLargeBubble position: " + newLargeBubble.transform.position);
             //rb = newLargeBubble.GetComponent<Rigidbody2D>();

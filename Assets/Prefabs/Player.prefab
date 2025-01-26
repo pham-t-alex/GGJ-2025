@@ -50,8 +50,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpStrength: 20
   speed: 7
-  LargeBubble: {fileID: 3013152855628683824, guid: d44045bc9ba574029a53572c99634332, type: 3}
   attackRange: 1.5
+  LargeBubble: {fileID: 3013152855628683824, guid: d44045bc9ba574029a53572c99634332, type: 3}
 --- !u!114 &56447430074566849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,7 +181,7 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 934fc720-802e-48d1-ac99-9b204ccc61f2
     m_ActionName: Player/Small Bubble[/Keyboard/1]
-- m_PersistentCalls:
+  - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3665253306636131059}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp

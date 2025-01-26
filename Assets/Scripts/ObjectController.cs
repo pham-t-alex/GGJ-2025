@@ -56,6 +56,15 @@ public class ObjectController : MonoBehaviour
         }
     }
 
+    [SerializeField] private GameObject largeBubble;
+    public GameObject LargeBubble
+    {
+        get
+        {
+            return largeBubble;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
