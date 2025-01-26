@@ -34,6 +34,11 @@ public class Player : MonoBehaviour
     private GameObject newLargeBubble;
     private bool usingLargeBubble = false;
 
+    public delegate void BubbleCountUpdate(int count);
+    public event BubbleCountUpdate BubbleCountEvent;
+
+    private int bubbleCount = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -145,6 +150,11 @@ public class Player : MonoBehaviour
     {
         if (context.started)
         {
+            if (bubbleCount < 1)
+            {
+                return;
+            }
+            ConsumeBubbles(1);
             Vector2 mousePos = Mouse.current.position.ReadValue();
             Vector2 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
             GameObject g = Instantiate(ObjectController.Instance.DistractionBubble, transform.position, Quaternion.identity);
@@ -172,6 +182,11 @@ public class Player : MonoBehaviour
     public void UseLargeBubble(InputAction.CallbackContext context) {
         Debug.Log("pressed number 2");
         if (context.started) {
+            if (bubbleCount < 2)
+            {
+                return;
+            }
+            ConsumeBubbles(2);
             newLargeBubble = Instantiate(ObjectController.Instance.LargeBubble);
             newLargeBubble.transform.position = new Vector2(this.transform.position.x, this.transform.position.y);
             //Debug.Log("newLargeBubble position: " + newLargeBubble.transform.position);
@@ -186,6 +201,13 @@ public class Player : MonoBehaviour
 
     public void PickupBubble()
     {
-    
+        bubbleCount++;
+        BubbleCountEvent(bubbleCount);
+    }
+
+    public void ConsumeBubbles(int count)
+    {
+        bubbleCount -= count;
+        BubbleCountEvent(bubbleCount);
     }
 }
