@@ -24,6 +24,15 @@ public class GroundedSideToSideMoveBehavior : EnemyMoveBehavior
         col = GetComponent<Collider2D>();
     }
 
+    public void Initialize(float leftBound, float rightBound, float waitTimeAtEdge, bool rightward, float speed)
+    {
+        this.leftBound = leftBound;
+        this.rightBound = rightBound;
+        this.waitTimeAtEdge = waitTimeAtEdge;
+        this.rightward = rightward;
+        this.speed = speed;
+    }
+
     private void Update()
     {
         if (paused > 0)

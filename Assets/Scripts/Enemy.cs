@@ -36,6 +36,14 @@ public class Enemy : MonoBehaviour
     public delegate void NotDistractedDelegate();
     public event NotDistractedDelegate NotDistractedEvent;
 
+    public void Initialize(float angleCenter, float angleWidth, Vector2 center, float range)
+    {
+        viewAngleCenter = angleCenter;
+        this.angleWidth = angleWidth;
+        viewCenter = center;
+        this.range = range;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
