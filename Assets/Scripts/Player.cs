@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -39,7 +40,10 @@ public class Player : MonoBehaviour
     public delegate void BubbleCountUpdate(int count);
     public event BubbleCountUpdate BubbleCountEvent;
 
-    private int bubbleCount = 2;
+    public delegate void Caught();
+    public event Caught CaughtEvent;
+
+    private int bubbleCount = 0;
     public int BubbleCount
     {
         get
@@ -55,6 +59,22 @@ public class Player : MonoBehaviour
         originalRB = rb;
         _player = this;
         pAnimator = GetComponent<Animator>();
+
+        if (SceneManager.GetActiveScene().name == "Game")
+        {
+            bubbleCount = PersistentData.Instance.prevBubbles;
+            string prev = PersistentData.Instance.prevScene;
+            if (prev == "After Sun Roof")
+            {
+                transform.position = new Vector2(-43, 92);
+            }
+            else if (prev == "Office Before Sun Roof")
+            {
+                transform.position = new Vector2(-50, 61);
+            }
+        }
+
+        BubbleCountEvent?.Invoke(bubbleCount);
     }
 
     // Update is called once per frame
@@ -237,5 +257,10 @@ public class Player : MonoBehaviour
     {
         bubbleCount -= count;
         BubbleCountEvent(bubbleCount);
+    }
+
+    public void OnDestroy()
+    {
+        CaughtEvent?.Invoke();
     }
 }

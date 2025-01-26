@@ -25,6 +25,11 @@ public class SceneChanger : MonoBehaviour
     {
         if (collision.GetComponent<Player>())
         {
+            if (SceneManager.GetActiveScene().name == "Game")
+            {
+                PersistentData.Instance.prevBubbles = Player.player.BubbleCount;
+            }
+            PersistentData.Instance.prevScene = SceneManager.GetActiveScene().name;
             if (PersistentData.Instance.postSunRoof)
             {
                 SceneManager.LoadScene(postSunRoofScene);

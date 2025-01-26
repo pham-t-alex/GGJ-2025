@@ -14,4 +14,6 @@ public class PersistentData
     }
 
     public bool postSunRoof = false;
+    public string prevScene;
+    public int prevBubbles = 2;
 }
