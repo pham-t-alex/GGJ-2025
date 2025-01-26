@@ -14,12 +14,23 @@ public class GroundedSideToSideMoveBehavior : EnemyMoveBehavior
     private Collider2D col;
     [SerializeField] private float speed = 3;
     private bool grounded = false;
+    private float preDistractedView;
+    private bool preDistractedOrientation;
     
     protected override void Start()
     {
         base.Start();
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
+    }
+
+    public void Initialize(float leftBound, float rightBound, float waitTimeAtEdge, bool rightward, float speed)
+    {
+        this.leftBound = leftBound;
+        this.rightBound = rightBound;
+        this.waitTimeAtEdge = waitTimeAtEdge;
+        this.rightward = rightward;
+        this.speed = speed;
     }
 
     private void Update()
@@ -36,7 +47,7 @@ public class GroundedSideToSideMoveBehavior : EnemyMoveBehavior
         }
     }
 
-    private void FixedUpdate()
+    protected override void StandardMovement()
     {
         if (grounded && paused == 0)
         {
@@ -44,7 +55,6 @@ public class GroundedSideToSideMoveBehavior : EnemyMoveBehavior
             {
                 rb.velocity = new Vector2(0, rb.velocity.y);
                 paused = waitTimeAtEdge;
-                Debug.Log("bound");
                 return;
             }
             Bounds bounds = col.bounds;
@@ -64,8 +74,58 @@ public class GroundedSideToSideMoveBehavior : EnemyMoveBehavior
             {
                 rb.velocity = new Vector2(0, rb.velocity.y);
                 paused = waitTimeAtEdge;
-                Debug.Log("edge");
             }
+        }
+    }
+
+    protected override void DistractedMovement()
+    {
+        if (grounded)
+        {
+            if (enemy.DistractionBubble.transform.position.x > transform.position.x)
+            {
+                rightward = true;
+            }
+            else if (enemy.DistractionBubble.transform.position.x < transform.position.x)
+            {
+                rightward = false;
+            }
+            else
+            {
+                rb.velocity = new Vector2(0, rb.velocity.y);
+                return;
+            }
+
+            Bounds bounds = col.bounds;
+            int sign = rightward ? 1 : -1;
+            Vector2 enemyEdge = (Vector2)bounds.center + new Vector2(sign * bounds.extents.x, 0);
+            int layerMask = 1 << 3;
+            RaycastHit2D hit = Physics2D.Raycast(enemyEdge, Vector2.down, bounds.extents.y + 0.1f, layerMask);
+
+            if (hit)
+            {
+                rb.velocity = new Vector2(sign * speed, rb.velocity.y);
+            }
+
+            else
+            {
+                rb.velocity = new Vector2(0, rb.velocity.y);
+            }
+        }
+    }
+
+    protected override void DistractedUpdate(float view)
+    {
+        preDistractedOrientation = rightward;
+        preDistractedView = view;
+    }
+
+    protected override void NotDistractedUpdate()
+    {
+        enemy.RestoreView(preDistractedView);
+        if (preDistractedOrientation != rightward)
+        {
+            enemy.FlipView();
         }
     }
 

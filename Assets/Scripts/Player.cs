@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private Rigidbody2D originalRB;
     private float jumping = 0;
+    [SerializeField] private float attackRange = 0;
 
     private static Player _player;
     public static Player player
@@ -129,6 +130,30 @@ public class Player : MonoBehaviour
             jumping = 0.1f;
         }
     }
+
+    public void Attack(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            Vector2 mousePos = Mouse.current.position.ReadValue();
+            Vector2 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+            GameObject g = Instantiate(ObjectController.Instance.AttackArea, transform.position + Vector3.Normalize((Vector3)worldPos - transform.position) * attackRange, Quaternion.identity);
+            Destroy(g, 0.1f);
+        }
+    }
+
+    public void ThrowSmallBubble(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            Vector2 mousePos = Mouse.current.position.ReadValue();
+            Vector2 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+            GameObject g = Instantiate(ObjectController.Instance.DistractionBubble, transform.position, Quaternion.identity);
+            g.GetComponent<DistractionBubble>().Launch(Vector3.Normalize((Vector3)worldPos - transform.position));
+            Destroy(g, 10f);
+        }
+    }
+
     private void OnCollisionStay2D(Collision2D collision) {
         Debug.Log("collision.gameObject.layer: " + collision.gameObject.layer);
         if (collision.gameObject.layer == 0/*3*/)
@@ -144,6 +169,7 @@ public class Player : MonoBehaviour
             }
         }
     }
+    
     public void UseLargeBubble(InputAction.CallbackContext context) {
         Debug.Log("pressed number 2");
         if (context.started) {
@@ -154,7 +180,13 @@ public class Player : MonoBehaviour
             usingLargeBubble = true;
         }
     }
+    
     public void setUsingLargeBubble(bool other) {
         usingLargeBubble = other;
+    }
+
+    public void PickupBubble()
+    {
+    
     }
 }

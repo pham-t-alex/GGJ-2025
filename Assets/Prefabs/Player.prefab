@@ -48,9 +48,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72611409fc5bd4d14a93d4b660006566, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpStrength: 7
+  jumpStrength: 20
   speed: 7
   LargeBubble: {fileID: 3013152855628683824, guid: d44045bc9ba574029a53572c99634332, type: 3}
+  attackRange: 1.5
 --- !u!114 &56447430074566849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,11 +94,19 @@ MonoBehaviour:
     m_ActionId: 26386e4d-5781-4c2c-a22f-c77218512223
     m_ActionName: Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 7ab145b7-54d1-4bf2-af7b-f90c17c8aa3b
-    m_ActionName: Player/Look[/Mouse/delta,/Pen/delta]
-  - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3665253306636131059}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: Attack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 7771acb0-c05d-4954-bb64-d3572bb1fb7f
     m_ActionName: Player/Fire[/Mouse/leftButton]
   - m_PersistentCalls:
@@ -160,6 +169,22 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3665253306636131059}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: ThrowSmallBubble
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 934fc720-802e-48d1-ac99-9b204ccc61f2
+    m_ActionName: Player/Small Bubble[/Keyboard/1]
+- m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3665253306636131059}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
         m_MethodName: UseLargeBubble
         m_Mode: 0
         m_Arguments:
@@ -192,12 +217,12 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 8
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!212 &1683264133985220509
 SpriteRenderer:
   m_ObjectHideFlags: 0
