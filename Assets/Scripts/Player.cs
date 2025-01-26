@@ -112,7 +112,7 @@ public class Player : MonoBehaviour
         {
             //movedLeftLast = true;
             movedRightLast = false;
-            GetComponent<SpriteRenderer>().flipX = false;
+            GetComponent<SpriteRenderer>().flipX = true;
             //if (player2) GetComponent<SpriteRenderer>().flipX = true;
             //else GetComponent<SpriteRenderer>().flipX = false;
             Debug.Log("Last moved left");
@@ -121,7 +121,7 @@ public class Player : MonoBehaviour
         {
             //movedLeftLast = false;
             movedRightLast = true;
-            GetComponent<SpriteRenderer>().flipX = true;
+            GetComponent<SpriteRenderer>().flipX = false;
             //if (!player2) GetComponent<SpriteRenderer>().flipX = true;
             //else GetComponent<SpriteRenderer>().flipX = false;
             Debug.Log("Last moved right");

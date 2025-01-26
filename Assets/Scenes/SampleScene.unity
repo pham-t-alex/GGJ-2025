@@ -201,6 +201,11 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 7193016290439394615, guid: e4405341260b2ae4fa6f92bceeb585b5, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e4405341260b2ae4fa6f92bceeb585b5, type: 3}
+--- !u!1 &381411408 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2419029166534691958, guid: b0971972e2aaf4ed9a70fa8042e9d419, type: 3}
+  m_PrefabInstance: {fileID: 2037304307}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -300,6 +305,55 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offset: {x: 0, y: 2, z: 0}
   smoothing: 0.2
+--- !u!1 &1139877227
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1139877229}
+  - component: {fileID: 1139877228}
+  m_Layer: 0
+  m_Name: ObjectController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1139877228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1139877227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd632691ba3fa5c47b518061b00acfa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackArea: {fileID: 5213469615338564571, guid: 82bacb3e8cd20b145ab74a5606c9ac8f, type: 3}
+  bubbleItem: {fileID: 4149131844322338458, guid: 5ea29a927c7c4fc409e0ec6638b05b9e, type: 3}
+  distractionBubble: {fileID: 3759566169994022334, guid: 6c0fcac241814b748bdef12b6f7a6bed, type: 3}
+  enemyPrefab: {fileID: 2046301432}
+  largeBubble: {fileID: 381411408}
+--- !u!4 &1139877229
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1139877227}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.5353401, y: 1.1134132, z: -0.03903579}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1457136552
 GameObject:
   m_ObjectHideFlags: 0
@@ -883,6 +937,7 @@ MonoBehaviour:
   waitTimeAtEdge: 1
   rightward: 0
   speed: 3
+  disableCollideProtect: 0
 --- !u!1001 &8399930528981229309
 PrefabInstance:
   m_ObjectHideFlags: 0
