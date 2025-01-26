@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     private int jumpCount = 1;
     private Vector2 moveDirection = Vector2.zero;
     private Rigidbody2D rb;
+    private Rigidbody2D originalRB;
     private float jumping = 0;
 
     private static Player _player;
@@ -29,10 +30,15 @@ public class Player : MonoBehaviour
         }
     }
 
+    [SerializeField] private GameObject LargeBubble;
+    private GameObject newLargeBubble;
+    private bool usingLargeBubble = false;
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        originalRB = rb;
         _player = this;
     }
 
@@ -47,11 +53,30 @@ public class Player : MonoBehaviour
                 jumping = 0;
             }
         }
+        if (newLargeBubble != null && usingLargeBubble) {
+            rb.velocity = new Vector2(moveDirection.x * speed, newLargeBubble.GetComponent<Rigidbody2D>().velocity.y);
+            newLargeBubble.transform.position = this.transform.position;
+        } else {
+            rb.velocity = new Vector2(moveDirection.x * speed, rb.velocity.y);    
+        }
     }
-
+    /*
     private void FixedUpdate() {
+        if (newLargeBubble != null && usingLargeBubble) {
+            rb.velocity = new Vector2(moveDirection.x * speed, newLargeBubble.GetComponent<Rigidbody2D>().velocity.y);
+            newLargeBubble.transform.position = this.transform.position;
+        } else {
+            rb.velocity = new Vector2(moveDirection.x * speed, rb.velocity.y);    
+        }
+        /*
         rb.velocity = new Vector2(moveDirection.x * speed, rb.velocity.y);
+        if (newLargeBubble != null && usingLargeBubble) {
+            this.transform.position = new Vector2(newLargeBubble.transform.position.x, newLargeBubble.transform.position.y);
+            //rb = newLargeBubble.GetComponent<Rigidbody2D>();
+        }
+        
     }
+    */
 
     public void Move(InputAction.CallbackContext context)
     {
@@ -105,8 +130,10 @@ public class Player : MonoBehaviour
         }
     }
     private void OnCollisionStay2D(Collision2D collision) {
-        if (collision.gameObject.layer == 3)
+        Debug.Log("collision.gameObject.layer: " + collision.gameObject.layer);
+        if (collision.gameObject.layer == 0/*3*/)
         {
+            Debug.Log("collision.contactCount: " + collision.contactCount);
             for (int i = 0; i < collision.contactCount; i++)
             {
                 if (collision.GetContact(i).normal == Vector2.up && jumping == 0)
@@ -116,5 +143,18 @@ public class Player : MonoBehaviour
                 }
             }
         }
+    }
+    public void UseLargeBubble(InputAction.CallbackContext context) {
+        Debug.Log("pressed number 2");
+        if (context.started) {
+            newLargeBubble = Instantiate(LargeBubble);
+            newLargeBubble.transform.position = new Vector2(this.transform.position.x, this.transform.position.y);
+            //Debug.Log("newLargeBubble position: " + newLargeBubble.transform.position);
+            //rb = newLargeBubble.GetComponent<Rigidbody2D>();
+            usingLargeBubble = true;
+        }
+    }
+    public void setUsingLargeBubble(bool other) {
+        usingLargeBubble = other;
     }
 }
